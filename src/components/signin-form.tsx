@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function SignInForm() {
   const router = useRouter();
-  const params = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,8 +28,7 @@ export function SignInForm() {
       return;
     }
 
-    const callback = params.get("callbackUrl") ?? "/";
-    router.push(callback);
+    router.push("/");
     router.refresh();
   }
 

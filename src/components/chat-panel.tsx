@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 
 type Message = {
@@ -28,19 +28,22 @@ export function ChatPanel({ userId }: { userId: string }) {
 
   const selectedChat = useMemo(() => chats.find((item) => item._id === selectedChatId), [chats, selectedChatId]);
 
-  async function loadChats() {
+  const loadChats = useCallback(async () => {
     const res = await fetch("/api/chats");
     if (!res.ok) return;
     const data = await res.json();
     setChats(data);
-    if (!selectedChatId && data[0]?._id) setSelectedChatId(data[0]._id);
-  }
-
-  useEffect(() => {
-    loadChats();
+    setSelectedChatId((current) => current ?? data[0]?._id ?? null);
   }, []);
 
   useEffect(() => {
+    queueMicrotask(() => {
+      void loadChats();
+    });
+  }, [loadChats]);
+
+  useEffect(() => {
+    void fetch("/api/socket");
     socket = io(process.env.NEXT_PUBLIC_SOCKET_URL ?? "", {
       path: "/api/socket_io",
     });

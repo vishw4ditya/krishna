@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getAuthSession } from "@/src/lib/auth";
 import { connectToDatabase } from "@/src/lib/db";
@@ -24,11 +27,14 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-3">
             {product.images.map((image: string, i: number) => (
-              <img
+              <Image
                 key={`${image}-${i}`}
                 src={image}
                 alt={product.title}
                 className="h-72 w-full rounded-xl object-cover"
+                width={900}
+                height={520}
+                unoptimized
               />
             ))}
           </div>

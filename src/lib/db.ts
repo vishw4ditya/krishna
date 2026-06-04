@@ -2,12 +2,7 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI is not configured.");
-}
-
 declare global {
-  // eslint-disable-next-line no-var
   var mongooseConn:
     | {
         conn: typeof mongoose | null;
@@ -21,9 +16,13 @@ global.mongooseConn = cached;
 
 export async function connectToDatabase() {
   if (cached.conn) return cached.conn;
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not configured.");
+  }
+  const mongoUri = MONGODB_URI;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
+    cached.promise = mongoose.connect(mongoUri, {
       bufferCommands: false,
       dbName: process.env.MONGODB_DB ?? "krishna",
     });

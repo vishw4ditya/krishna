@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { currency } from "@/src/lib/format";
 
@@ -14,10 +15,13 @@ export type ProductCardData = {
 export function ProductCard({ product }: { product: ProductCardData }) {
   return (
     <article className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-      <img
+      <Image
         src={product.images[0] ?? "https://placehold.co/600x400?text=Product"}
         alt={product.title}
         className="h-44 w-full rounded-lg object-cover"
+        width={600}
+        height={400}
+        unoptimized
       />
       <div className="mt-3 space-y-1">
         <h3 className="line-clamp-1 font-semibold">{product.title}</h3>

@@ -80,12 +80,13 @@ export const authOptions: NextAuthOptions = {
       const existing = await User.findOne({ email });
 
       if (!existing) {
+        const googleProfile = profile as { picture?: string; name?: string; email?: string };
         await User.create({
-          name: profile.name ?? "Customer",
+          name: googleProfile.name ?? "Customer",
           email,
           role: "customer",
           approvalStatus: "approved",
-          profileImage: profile.picture,
+          profileImage: googleProfile.picture,
         });
       }
 

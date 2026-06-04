@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { SiteHeader } from "@/src/components/site-header";
 import { BranchHeadRegistrationForm } from "@/src/components/branch-head-registration-form";
 import { connectToDatabase } from "@/src/lib/db";
